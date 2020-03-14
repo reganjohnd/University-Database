@@ -3,19 +3,11 @@
 
 void attendance::take_att()
 {
+	count_it = 0;
+	count_internal = 0;
+
 	conn = mysql_init(0);
 	conn = mysql_real_connect(conn, "localhost", "root", "ReganjohnD1", "student_database", 3306, NULL, 0);
-
-	const char* q = "SELECT * FROM student";
-	qstate = mysql_query(conn, q);
-	res = mysql_store_result(conn);
-
-	while (row = mysql_fetch_row(res))
-	{
-		vs_student_id.push_back(row[0]);
-		student_name.push_back(row[1]);
-	}
-	mysql_free_result(res);
 
 	puts("Date (dd/mm/yyyy): ");
 	cin.ignore();
@@ -25,10 +17,37 @@ void attendance::take_att()
 	//cin.ignore();
 	getline(cin,module_code);
 
-	count_it = 0;
-	for(int i = 0; i < mechanics::count_students(); i++)
+	query = "SELECT * FROM student_modules WHERE module_code = " + module_code + "";
+	const char* q = query.c_str();
+	qstate = mysql_query(conn, q);
+	res = mysql_store_result(conn);
+
+	while (row = mysql_fetch_row(res))
 	{
-		cout << student_name[i]<<": ";
+		vs_student_id.push_back(row[1]);
+		//student_name.push_back(row[1]);
+		count_internal++;
+		//cout << vs_student_id[count_internal - 1];
+		//system("pause");
+	}
+	mysql_free_result(res);
+
+	
+
+	
+	for(int i = 0; i < count_internal; i++)
+	{
+		query = "SELECT student_name FROM student WHERE student_number = " + vs_student_id[i] + "";
+		const char* q = query.c_str();
+		qstate = mysql_query(conn, q);
+		res = mysql_store_result(conn);
+		while (row = mysql_fetch_row(res))
+		{
+			s_student_name = row[0];
+		}
+
+		cout <<s_student_name<<": ";
+		//system("pause");
 		getline(cin, present);
 
 		if (present == "a" || present == "A" || present == "h" || present == "H")
@@ -44,7 +63,7 @@ void attendance::take_att()
 		else if (present != "a" || present != "A" || present != "h" || present != "H")
 		{
 			puts("Please enter a valid character!");
-			take_att_err(count_it,mechanics::count_students());
+			take_att_err(count_it,count_internal);
 			return;
 		}
 	}
@@ -54,12 +73,28 @@ void attendance::take_att()
 
 void attendance::take_att_err(int x, int y)
 {
+	
 	for (static int i = x; i < y ; i++)
 	{
-		cout << i << endl;
+		cout << i << endl << vs_student_id[i];
 		system("pause");
-		cout << student_name[i] << ": ";
+		mysql_free_result(res);
+
+		query = "SELECT student_name FROM student WHERE student_number = " + vs_student_id[i] + "";
+		const char* q = query.c_str();
+		qstate = mysql_query(conn, q);
+		res = mysql_store_result(conn);
+		while (row = mysql_fetch_row(res))
+		{
+			s_student_name = row[0];
+		}
+
+		cout << s_student_name << ": ";
+		//system("pause");
 		getline(cin, present);
+
+		//cout << i << endl;
+		//system("pause");
 
 		if (present == "a" || present == "A" || present == "h" || present == "H")
 		{
@@ -72,7 +107,7 @@ void attendance::take_att_err(int x, int y)
 		else if (present != "a" || present != "A" || present != "h" || present != "H")
 		{
 			puts("Please enter a valid character!");
-			take_att_err(count_it, mechanics::count_students());
+			take_att_err(count_it, count_internal);
 		}
 	}
 	mysql_free_result(res);

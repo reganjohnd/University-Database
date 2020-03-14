@@ -11,10 +11,10 @@ static MYSQL* conn;
 static MYSQL_ROW row;
 static MYSQL_RES* res;
 */
-static string date, /*query,*/ att_status, present, module_code, student_id;
+static string date, /*query,*/ att_status, present, module_code, student_id, s_student_name;
 static vector<string> student_name, vs_student_id;
 static vector<int> vi_student_id;
-static int count_it;
+static int count_it, count_internal;
 
 class attendance
 {

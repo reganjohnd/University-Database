@@ -18,8 +18,15 @@ Modules
 
 #include "menu.h"
 #include "module.h"
+#include "attendance.h"
+#include "student.h"
+
 int main()
 {
-	menu::mainmenu();
-	
+	//student::add_student();
+	//menu::mainmenu();
+	//attendance::export_att();
+	//student::view_student();
+	student::update_student();
+
 }

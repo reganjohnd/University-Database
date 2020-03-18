@@ -1,5 +1,12 @@
 #include "mechanics.h"
 
+int mechanics::qstate;
+MYSQL* mechanics::conn;
+MYSQL_ROW mechanics::row;
+MYSQL_RES* mechanics::res;
+string mechanics::query;
+const char* mechanics::q;
+
 int mechanics::count_students()
 {
 	student_count = 0;

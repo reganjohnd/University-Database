@@ -53,5 +53,8 @@
     <ClInclude Include="mechanics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mysql_rj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
